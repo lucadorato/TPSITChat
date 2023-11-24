@@ -34,7 +34,7 @@ public class LoggedIndex extends javax.swing.JFrame {
     {
         Contacts = new ArrayList<String>();
         LContacts = new ArrayList<JLabel>();
-        for(int i = 0; i<5;i++)
+        for(int i = 0; i<10;i++)
         {
             Contacts.add("Contact"+i);
         }
@@ -114,31 +114,23 @@ public class LoggedIndex extends javax.swing.JFrame {
 
     private void jScrollPane1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jScrollPane1ComponentShown
         // TODO add your handling code here:
-        for(int i = 0; i<Contacts.size(); i++)
-        {
-            LContacts.add(new JLabel(Contacts.get(i)));
-            LContacts.get(i).setComponentZOrder(jScrollPane1, i);
-            LContacts.get(i).setVisible(true);
-        }
+        
     }//GEN-LAST:event_jScrollPane1ComponentShown
 
     private void jScrollPane1ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_jScrollPane1ComponentAdded
         // TODO add your handling code here:
-        for(int i = 0; i<Contacts.size(); i++)
-        {
-            LContacts.add(new JLabel(Contacts.get(i)));
-            LContacts.get(i).setComponentZOrder(jScrollPane1, i);
-            LContacts.get(i).setVisible(true);
-        }
+        
     }//GEN-LAST:event_jScrollPane1ComponentAdded
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
         JPanel p2 = new JPanel();
-        p2.setLayout(new BoxLayout(p2, BoxLayout.PAGE_AXIS));
+        // p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
+        //p2.setLayout(new GridBagLayout());
+        p2.setLayout(null);
         p2.setBackground(Color.LIGHT_GRAY);
-        //p2.setPreferredSize(new Dimension(70, 600));
-        //p2.setAutoscrolls(true);
+        p2.setPreferredSize(new Dimension(70, 600));
+        p2.setAutoscrolls(true);
         jScrollPane1.setViewportView(p2);
         //JScrollPane scrollPane = new JScrollPane(p2);
 //        scrollPane.setHorizontalScrollBarPolicy(
@@ -152,16 +144,27 @@ public class LoggedIndex extends javax.swing.JFrame {
             
             
        
-            LContacts.add(new JLabel(Contacts.get(i)));
-            //sp1.setLayout(new FlowLayout());
-            LContacts.get(i).setBackground(Color.WHITE);
-            LContacts.get(i).setPreferredSize(new Dimension(70, 50));
+            //LContacts.add(new JLabel(Contacts.get(i)));
+            JPanel jp = new JPanel();
+            jp.setLayout(null);
+            jp.setBackground(Color.WHITE);
+            //jp.setPreferredSize(new Dimension(70, 30));
+            jp.setBounds(0,i*50,170,50);
             //LContacts.get(i).setBounds(0, 50*i, 100, 50);
             //LContacts.get(i).setMinimumSize(new Dimension(180,50));
             //LContacts.get(i).setMaximumSize(new Dimension(170, 50));
-            LContacts.get(i).setBorder(new LineBorder(Color.RED));
-            p2.add(LContacts.get(i));
-            p2.add(Box.createRigidArea(new Dimension(0,5)));
+            jp.setBorder(new LineBorder(Color.RED));
+            //JButton b = new JButton(Contacts.get(i));
+            JLabel b = new JLabel(Contacts.get(i));
+            //b.setPreferredSize(new Dimension(70, 30));
+            b.setBounds(0,0,170,50);
+            // b.setMinimumSize(new Dimension(100,50));
+            //b.setBounds(0,50*i,100,50);
+            jp.add(b);
+            //sp1.setLayout(new FlowLayout());
+            
+            p2.add(jp);
+            //p2.add(Box.createRigidArea(new Dimension(70,5)));
 //            try{
 //            Thread.sleep(1000);
 //            }
@@ -173,13 +176,13 @@ public class LoggedIndex extends javax.swing.JFrame {
 //            LContacts.get(i).setComponentZOrder(jScrollPane1, i);
 //            LContacts.get(i).setVisible(true);
         }
-        JPanel spN = new JPanel();
-        spN.setLayout(new FlowLayout());
-        spN.setBackground(Color.WHITE);
-        spN.setPreferredSize(new Dimension(70, 180));
-        spN.setBounds(0,0,70,100);
-        spN.setBorder(new LineBorder(Color.RED));
-        p2.add(spN); 
+        // JPanel spN = new JPanel();
+        // spN.setLayout(new FlowLayout());
+        // spN.setBackground(Color.WHITE);
+        // spN.setPreferredSize(new Dimension(70, 180));
+        // spN.setBounds(0,0,70,100);
+        // spN.setBorder(new LineBorder(Color.RED));
+        // p2.add(spN); 
     }//GEN-LAST:event_jButton1MouseClicked
 
     
