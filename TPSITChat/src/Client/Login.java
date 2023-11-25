@@ -120,6 +120,7 @@ public class Login extends javax.swing.JFrame {
                 .addGap(45, 45, 45))
         );
 
+        jLabel2.getAccessibleContext().setAccessibleDescription("");
         jButton1.getAccessibleContext().setAccessibleName("Accedi");
 
         pack();
