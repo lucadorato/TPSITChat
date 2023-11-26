@@ -12,6 +12,7 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import java.awt.*;
 
 
 /**
@@ -98,7 +99,11 @@ public class LoggedIndex extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jPanel2);
 
         jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
+        jTextArea1.setWrapStyleWord(true);
+        jTextArea1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextArea1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jScrollPane3.setViewportView(jTextArea1);
 
         jButton1.setText("Send");
@@ -221,15 +226,26 @@ public class LoggedIndex extends javax.swing.JFrame {
         // TODO add your handling code here:
         String sMessage = jTextArea1.getText();
         
-        JLabel MessLabel = new JLabel("<html>"+sMessage+"</html>");
+        JLabel MessLabelApp = new JLabel(sMessage);
+        JTextArea MessLabel = new JTextArea(sMessage);
+        //MessLabel.setColumns(20);
+        MessLabel.setEditable(false);
+        MessLabel.setBorder(null);
+        MessLabel.setWrapStyleWord(true);
+        MessLabel.setLineWrap(true);
+
         MessLabel.setBackground(Color.GREEN);
+        //MessLabel.setUI(MultiLineLabelUI.labelUI);
         MessLabel.setOpaque(true);
-        MessLabel.setMinimumSize(new Dimension(70,40));
-        MessLabel.setBounds(0, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, 20*((MessLabel.getPreferredSize().width/100)+1));
+        //MessLabel.setMinimumSize(new Dimension(70,40));
+        //MessLabel.setLocation(0,YLastMessage);
+        MessLabel.setVisible(true);
+        MessLabel.setBounds(0, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, 20*((MessLabelApp.getPreferredSize().width/100)+1));
+        
         jPanel2.add(MessLabel);
         jPanel2.revalidate();
         jPanel2.repaint();
-        YLastMessage+= (20*((MessLabel.getPreferredSize().width/100)+1) + fixedMessageYOffset); 
+        YLastMessage+= (20*((MessLabelApp.getPreferredSize().width/100)+1) + fixedMessageYOffset); 
         
         jTextArea1.selectAll();
         jTextArea1.replaceSelection("");
@@ -250,17 +266,23 @@ public class LoggedIndex extends javax.swing.JFrame {
         int JLIdx = Integer.parseInt(name.getName());
         for(int i = 0; i<Messages.get(JLIdx).size();i++)
         {
-            JLabel MessLabel = new JLabel("<html><p>"+Messages.get(JLIdx).get(i).getMsg()+"</p></html>");
+            JLabel MessLabelApp = new JLabel(Messages.get(JLIdx).get(i).getMsg());
+            JTextArea MessLabel = new JTextArea(Messages.get(JLIdx).get(i).getMsg());
+            //MessLabel.setColumns(20);
+            MessLabel.setEditable(false);
+            MessLabel.setBorder(null);
+            MessLabel.setWrapStyleWord(true);
+            MessLabel.setLineWrap(true);
             MessLabel.setBackground(Color.GREEN);
             MessLabel.setOpaque(true);
             MessLabel.setMinimumSize(new Dimension(70,40));
             if(Messages.get(JLIdx).get(i).getSender().equals(LocalUser))
-                MessLabel.setBounds(0, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, MessLabel.getPreferredSize().height);
+                MessLabel.setBounds(0, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, (20*((MessLabelApp.getPreferredSize().width/100)+1)));
             else
-                MessLabel.setBounds(200, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, MessLabel.getPreferredSize().height);
+                MessLabel.setBounds(200, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, (20*((MessLabelApp.getPreferredSize().width/100)+1)));
             jPanel2.add(MessLabel);
 
-            YLastMessage+= (20*((MessLabel.getPreferredSize().width/100)+1) + fixedMessageYOffset);
+            YLastMessage+= (20*((MessLabelApp.getPreferredSize().width/100)+1) + fixedMessageYOffset);
         }
     }
     
