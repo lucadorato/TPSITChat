@@ -27,6 +27,12 @@ public class LoggedIndex extends javax.swing.JFrame {
      private ArrayList<ArrayList<Message>> Messages;
      private int fixedMessageYOffset = 25;
      private int YLastMessage = 0;
+     private final int MaxMessageWidth = 170;
+     private final int RemoteSenderStartOffsetMessage = 200;
+     private final int LocalSenderStartOffsetMessage = 0;
+     private int SingleLineMessageHeight = 18;
+     private final int ContactHeight = 50;
+     private final int ContactWidth = 170;
     /**
      * Creates new form LoggedIndex
      */
@@ -36,18 +42,23 @@ public class LoggedIndex extends javax.swing.JFrame {
         InitArrayList();
     }
     
+    /**
+     * @brief: InitArrayList, stub function to initialize contacts and messages
+     * @param: void
+     * @return: void
+     */
     private void InitArrayList()
     {
         LocalUser = "LocalUser";
         Contacts = new ArrayList<String>();
         LContacts = new ArrayList<JLabel>();
-        for(int i = 0; i<5;i++)
+        for(int i = 0; i<10;i++)
         {
             Contacts.add("Contact"+i);
         }
         
         Messages = new ArrayList<ArrayList<Message>>();
-        for(int i = 0; i<5;i++)
+        for(int i = 0; i<10;i++)
         {
             ArrayList<Message> ContMessages = new ArrayList<Message>();
             for(int j = 0; j<5;j++)
@@ -72,11 +83,12 @@ public class LoggedIndex extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jPanel2 = new javax.swing.JPanel();
+        jPaneChatScreen = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextAreaInputChat = new javax.swing.JTextArea();
+        jButtonSend = new javax.swing.JButton();
+        jScrollContacts = new javax.swing.JScrollPane();
+        JPanelContacts = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -85,36 +97,37 @@ public class LoggedIndex extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jPaneChatScreenLayout = new javax.swing.GroupLayout(jPaneChatScreen);
+        jPaneChatScreen.setLayout(jPaneChatScreenLayout);
+        jPaneChatScreenLayout.setHorizontalGroup(
+            jPaneChatScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 415, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPaneChatScreenLayout.setVerticalGroup(
+            jPaneChatScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 317, Short.MAX_VALUE)
         );
 
-        jScrollPane2.setViewportView(jPanel2);
+        jScrollPane2.setViewportView(jPaneChatScreen);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setWrapStyleWord(true);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextArea1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jScrollPane3.setViewportView(jTextArea1);
+        jTextAreaInputChat.setEditable(false);
+        jTextAreaInputChat.setColumns(20);
+        jTextAreaInputChat.setLineWrap(true);
+        jTextAreaInputChat.setRows(5);
+        jTextAreaInputChat.setWrapStyleWord(true);
+        jTextAreaInputChat.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextAreaInputChat.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jScrollPane3.setViewportView(jTextAreaInputChat);
 
-        jButton1.setText("Send");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButtonSend.setText("Send");
+        jButtonSend.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                jButtonSendMouseClicked(evt);
             }
         });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonSendActionPerformed(evt);
             }
         });
 
@@ -126,7 +139,7 @@ public class LoggedIndex extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -137,9 +150,26 @@ public class LoggedIndex extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
+
+        jScrollContacts.setName("JScrollContacts"); // NOI18N
+
+        JPanelContacts.setAutoscrolls(true);
+
+        javax.swing.GroupLayout JPanelContactsLayout = new javax.swing.GroupLayout(JPanelContacts);
+        JPanelContacts.setLayout(JPanelContactsLayout);
+        JPanelContactsLayout.setHorizontalGroup(
+            JPanelContactsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 143, Short.MAX_VALUE)
+        );
+        JPanelContactsLayout.setVerticalGroup(
+            JPanelContactsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 441, Short.MAX_VALUE)
+        );
+
+        jScrollContacts.setViewportView(JPanelContacts);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -147,7 +177,7 @@ public class LoggedIndex extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollContacts, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
@@ -158,142 +188,159 @@ public class LoggedIndex extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollContacts)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * @brief: formWindowOpened This function is an handle funciton that will manage the following scenario: 
+     * When the user is logged on the new opening window 
+     * it is neede to load the chatting contacts in the left contacts scroll bar
+     * @param: evt [input]: the object event that will trigger this handle action
+     * @return: void
+     */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-        // TODO add your handling code here:
-        // TODO add your handling code here:
-        JPanel p2 = new JPanel();
-        // p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
-        //p2.setLayout(new GridBagLayout());
-        p2.setLayout(null);
-        p2.setBackground(Color.LIGHT_GRAY);
-        p2.setPreferredSize(new Dimension(70, 600));
-        p2.setAutoscrolls(true);
-        jScrollPane1.setViewportView(p2);
-        //JScrollPane scrollPane = new JScrollPane(p2);
-//        scrollPane.setHorizontalScrollBarPolicy(
-//                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.setVerticalScrollBarPolicy(
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        //jScrollPane1.setBounds(0, 0, 70, 800);
+        
+        
+        JPanelContacts.setLayout(null); //set Layout null to the JPanel contact in order to manage contact position using x,y coordinates
+        JPanelContacts.setBackground(Color.LIGHT_GRAY);
+        //jScrollContacts.setViewportView(JPanelContacts);
+        jScrollContacts.setVerticalScrollBarPolicy(
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); //set only the vertical scroll
+        //Add a contact for each contact saved in the arrayList Contacts
         for(int i = 0; i<Contacts.size(); i++)
         {
-            //LContacts.add(new JLabel(Contacts.get(i)));
-            //LContacts.add(new JLabel(Contacts.get(i)));
-            JPanel jp = new JPanel();
-            jp.setLayout(null);
-            jp.setBackground(Color.WHITE);
-            //jp.setPreferredSize(new Dimension(70, 30));
-            jp.setBounds(0,i*50,170,50);
-            //LContacts.get(i).setBounds(0, 50*i, 100, 50);
-            //LContacts.get(i).setMinimumSize(new Dimension(180,50));
-            //LContacts.get(i).setMaximumSize(new Dimension(170, 50));
-            jp.setBorder(new LineBorder(Color.RED));
-            //JButton b = new JButton(Contacts.get(i));
-            LContacts.add(new JLabel(Contacts.get(i)));
-            LContacts.get(i).setName(String.valueOf(i));
-            //b.setPreferredSize(new Dimension(70, 30));
-            LContacts.get(i).setBounds(0,0,170,50);
-            //ChatIdx = i;
-            LContacts.get(i).addMouseListener(new java.awt.event.MouseAdapter() {
-                
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    
-                    jLableIMouseClicked(evt);
-                }
-        });
-            // b.setMinimumSize(new Dimension(100,50));
-            //b.setBounds(0,50*i,100,50);
-            jp.add(LContacts.get(i));
-            //sp1.setLayout(new FlowLayout());
-            
-            p2.add(jp);
+            AddContact(Contacts.get(i),LContacts.size());
         }
         
     }//GEN-LAST:event_formWindowOpened
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonSendActionPerformed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    /**
+     * @brief: Send Button Click Handle Function
+     * @param: evt [input0]
+     * @return: void
+     */
+    private void jButtonSendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSendMouseClicked
         // TODO add your handling code here:
-        String sMessage = jTextArea1.getText();
-        
-        JLabel MessLabelApp = new JLabel(sMessage);
-        JTextArea MessLabel = new JTextArea(sMessage);
-        //MessLabel.setColumns(20);
-        MessLabel.setEditable(false);
-        MessLabel.setBorder(null);
-        MessLabel.setWrapStyleWord(true);
-        MessLabel.setLineWrap(true);
+        String sMessage = jTextAreaInputChat.getText();
+        if(sMessage.length()!=0)
+            AddChatText(sMessage, LocalUser);
+    }//GEN-LAST:event_jButtonSendMouseClicked
 
-        MessLabel.setBackground(Color.GREEN);
-        //MessLabel.setUI(MultiLineLabelUI.labelUI);
-        MessLabel.setOpaque(true);
-        //MessLabel.setMinimumSize(new Dimension(70,40));
-        //MessLabel.setLocation(0,YLastMessage);
-        MessLabel.setVisible(true);
-        MessLabel.setBounds(0, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, 20*((MessLabelApp.getPreferredSize().width/100)+1));
-        
-        jPanel2.add(MessLabel);
-        jPanel2.revalidate();
-        jPanel2.repaint();
-        YLastMessage+= (20*((MessLabelApp.getPreferredSize().width/100)+1) + fixedMessageYOffset); 
-        
-        jTextArea1.selectAll();
-        jTextArea1.replaceSelection("");
-        
-        
-    }//GEN-LAST:event_jButton1MouseClicked
-
+    /**
+     * @brief: Contact Mouse Clicked handle function
+     * @param evt [input]
+     * @return: void
+     */
     private void jLableIMouseClicked(java.awt.event.MouseEvent evt) {                                      
-        // TODO add your handling code here:
-        jPanel2.removeAll();
-        jPanel2.revalidate();
-        jPanel2.repaint();
-        jPanel2.setLayout(null);
-        jPanel2.setBackground(Color.LIGHT_GRAY);
-        jPanel2.setPreferredSize(new Dimension(319, 600));
-        jPanel2.setAutoscrolls(true);
+        
+        jTextAreaInputChat.setEditable(true);
+        YLastMessage = 0;  // reset the Last Message y coordinate
+        //remove all message in Jpanel Chat screen and refresh it
+        jPaneChatScreen.removeAll(); 
+        jPaneChatScreen.revalidate();
+        jPaneChatScreen.repaint();
+        ////set Layout null to the JPanel contact in order to manage messages position using x,y coordinates
+        jPaneChatScreen.setLayout(null);
+        jPaneChatScreen.setBackground(Color.LIGHT_GRAY);
+        jPaneChatScreen.setAutoscrolls(true);
+        //get the event source (the initiator of the event, to understand which contact has been clicked)
         JLabel name = (JLabel)evt.getSource();
+        //the name has been set as the index of the Messages arrayList in witch it has been added
         int JLIdx = Integer.parseInt(name.getName());
+        //for each message associated to the clicked contact add a message in the JPaneChatScreen
         for(int i = 0; i<Messages.get(JLIdx).size();i++)
         {
-            JLabel MessLabelApp = new JLabel(Messages.get(JLIdx).get(i).getMsg());
-            JTextArea MessLabel = new JTextArea(Messages.get(JLIdx).get(i).getMsg());
-            //MessLabel.setColumns(20);
-            MessLabel.setEditable(false);
-            MessLabel.setBorder(null);
-            MessLabel.setWrapStyleWord(true);
-            MessLabel.setLineWrap(true);
-            MessLabel.setBackground(Color.GREEN);
-            MessLabel.setOpaque(true);
-            MessLabel.setMinimumSize(new Dimension(70,40));
-            if(Messages.get(JLIdx).get(i).getSender().equals(LocalUser))
-                MessLabel.setBounds(0, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, (20*((MessLabelApp.getPreferredSize().width/100)+1)));
-            else
-                MessLabel.setBounds(200, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, (20*((MessLabelApp.getPreferredSize().width/100)+1)));
-            jPanel2.add(MessLabel);
-
-            YLastMessage+= (20*((MessLabelApp.getPreferredSize().width/100)+1) + fixedMessageYOffset);
+            AddChatText(Messages.get(JLIdx).get(i).getMsg(), Messages.get(JLIdx).get(i).getSender());
         }
     }
     
+    /**
+     * @brief: Add a message to the Chat Message area
+     * @param text [input]: the mesasage text to add
+     * @param sender [input]: the sender of the message [local or remote sender]
+     */
+    private void AddChatText(String text, String sender)
+    {
+        //create a new label with the message (this structure has been used just as app variable in order to understand the length of the message in pixel unit)
+        JLabel MessLabelApp = new JLabel(text);
+        //create a JtextArea not editable to add in the Chat screen
+        JTextArea MessTextArea = new JTextArea(text);
+        MessTextArea.setEditable(false);
+        MessTextArea.setBorder(null);
+        //set the text area with the line wrap in order to fix the width and perform an endline on long message
+        MessTextArea.setWrapStyleWord(true);
+        MessTextArea.setLineWrap(true);
+        // set the color of the messageText and set it as opaque
+        MessTextArea.setBackground(Color.GREEN);
+        MessTextArea.setOpaque(true);
+        //Choose the position of the added text considering the last message text to chose the right y coodinate
+        //and the sender to chose the right x coordinate
+        if(sender.equals(LocalUser))
+            MessTextArea.setBounds(LocalSenderStartOffsetMessage, YLastMessage, MaxMessageWidth, (SingleLineMessageHeight*((MessLabelApp.getPreferredSize().width/MaxMessageWidth)+1)));
+        else
+            MessTextArea.setBounds(RemoteSenderStartOffsetMessage, YLastMessage, MaxMessageWidth, (SingleLineMessageHeight*((MessLabelApp.getPreferredSize().width/MaxMessageWidth)+1)));
+        jPaneChatScreen.add(MessTextArea);
+
+        //update the last y coordinate of the message
+        YLastMessage+= (SingleLineMessageHeight*((MessLabelApp.getPreferredSize().width/MaxMessageWidth)+1) + fixedMessageYOffset);
+        //update the y size of the scroll bar
+        jPaneChatScreen.setPreferredSize(new Dimension(319, YLastMessage+SingleLineMessageHeight));
+        jPaneChatScreen.revalidate();
+        jPaneChatScreen.repaint();
+        //clear the input text area
+        jTextAreaInputChat.selectAll();
+        jTextAreaInputChat.replaceSelection("");
+    }
+
+    /**
+     * @brief: Add a new contact to the contact scroll bar
+     * @param contact [input] the String of the contact to add
+     * @param ContatIdx [input] the index of the arrayList of the JLable contact
+     * @return: void
+     */
+    private void AddContact(String contact, int ContatIdx)
+    {
+        //Add the new contact in an arrayList of JLable
+        LContacts.add(new JLabel(contact));
+        //Set the JLable name as the index value of the arraylist
+        LContacts.get(ContatIdx).setName(String.valueOf(ContatIdx));
+        //set the contact Jlable size
+        LContacts.get(ContatIdx).setBounds(0,0,ContactWidth,ContactHeight);
+        //Add a listener to trigger the click contact event
+        LContacts.get(ContatIdx).addMouseListener(new java.awt.event.MouseAdapter() {
+            
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                
+                jLableIMouseClicked(evt);
+            }
+        });
+        //Add a new jpanel to the contact scroll bar
+        JPanel JPSingleContact = new JPanel();
+        JPSingleContact.setLayout(null);
+        JPSingleContact.setBackground(Color.WHITE);
+        JPSingleContact.setBounds(0,ContatIdx*ContactHeight,ContactWidth,ContactHeight);
+        JPSingleContact.setBorder(new LineBorder(Color.RED));
+        JPSingleContact.add(LContacts.get(ContatIdx));
+        JPanelContacts.add(JPSingleContact);
+        //resize the jpanel scroll bar considering the new added contact
+        JPanelContacts.setPreferredSize(new Dimension(70, ContatIdx*ContactHeight+ContactHeight));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JPanel JPanelContacts;
+    private javax.swing.JButton jButtonSend;
+    private javax.swing.JPanel jPaneChatScreen;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollContacts;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextAreaInputChat;
     // End of variables declaration//GEN-END:variables
 }
