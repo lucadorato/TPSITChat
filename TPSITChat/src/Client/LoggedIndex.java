@@ -24,7 +24,8 @@ public class LoggedIndex extends javax.swing.JFrame {
      private ArrayList<JLabel> LContacts;
      private String LocalUser;
      private ArrayList<ArrayList<Message>> Messages;
-     private int NScreenMessage = 0;
+     private int fixedMessageYOffset = 25;
+     private int YLastMessage = 0;
     /**
      * Creates new form LoggedIndex
      */
@@ -220,15 +221,15 @@ public class LoggedIndex extends javax.swing.JFrame {
         // TODO add your handling code here:
         String sMessage = jTextArea1.getText();
         
-        JLabel MessLabel = new JLabel(sMessage);
+        JLabel MessLabel = new JLabel("<html>"+sMessage+"</html>");
         MessLabel.setBackground(Color.GREEN);
         MessLabel.setOpaque(true);
         MessLabel.setMinimumSize(new Dimension(70,40));
-        MessLabel.setBounds(0, NScreenMessage*50, MessLabel.getPreferredSize().width, MessLabel.getPreferredSize().height);
+        MessLabel.setBounds(0, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, 20*((MessLabel.getPreferredSize().width/100)+1));
         jPanel2.add(MessLabel);
         jPanel2.revalidate();
         jPanel2.repaint();
-        NScreenMessage++; 
+        YLastMessage+= (20*((MessLabel.getPreferredSize().width/100)+1) + fixedMessageYOffset); 
         
         jTextArea1.selectAll();
         jTextArea1.replaceSelection("");
@@ -249,16 +250,17 @@ public class LoggedIndex extends javax.swing.JFrame {
         int JLIdx = Integer.parseInt(name.getName());
         for(int i = 0; i<Messages.get(JLIdx).size();i++)
         {
-            JLabel MessLabel = new JLabel(Messages.get(JLIdx).get(i).getMsg());
+            JLabel MessLabel = new JLabel("<html><p>"+Messages.get(JLIdx).get(i).getMsg()+"</p></html>");
             MessLabel.setBackground(Color.GREEN);
             MessLabel.setOpaque(true);
             MessLabel.setMinimumSize(new Dimension(70,40));
             if(Messages.get(JLIdx).get(i).getSender().equals(LocalUser))
-                MessLabel.setBounds(0, i*50, MessLabel.getPreferredSize().width, MessLabel.getPreferredSize().height);
+                MessLabel.setBounds(0, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, MessLabel.getPreferredSize().height);
             else
-                MessLabel.setBounds(200, i*50, MessLabel.getPreferredSize().width, MessLabel.getPreferredSize().height);
+                MessLabel.setBounds(200, YLastMessage, 100/*MessLabel.getPreferredSize().width*/, MessLabel.getPreferredSize().height);
             jPanel2.add(MessLabel);
-            NScreenMessage++;
+
+            YLastMessage+= (20*((MessLabel.getPreferredSize().width/100)+1) + fixedMessageYOffset);
         }
     }
     
