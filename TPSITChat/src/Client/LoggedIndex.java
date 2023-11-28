@@ -21,7 +21,7 @@ import java.awt.*;
  */
 public class LoggedIndex extends javax.swing.JFrame {
 
-     private ArrayList<String> Contacts;
+     private ArrayList<String> Contacts;//Contacts ArrayList
      private ArrayList<JLabel> LContacts;
      private String LocalUser;
      private ArrayList<ArrayList<Message>> Messages;
