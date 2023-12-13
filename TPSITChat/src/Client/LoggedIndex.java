@@ -12,6 +12,9 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+
+import Interfaces.ClientBLInterface;
+
 import java.awt.*;
 
 
@@ -19,7 +22,7 @@ import java.awt.*;
  *
  * @author lucad
  */
-public class LoggedIndex extends javax.swing.JFrame {
+public class LoggedIndex extends javax.swing.JFrame implements ClientBLInterface {
 
      private ArrayList<String> Contacts;//Contacts ArrayList
      private ArrayList<JLabel> LContacts;
@@ -33,13 +36,16 @@ public class LoggedIndex extends javax.swing.JFrame {
      private int SingleLineMessageHeight = 18;
      private final int ContactHeight = 50;
      private final int ContactWidth = 170;
+     private ProxyChatClient proxy;
     /**
      * Creates new form LoggedIndex
      */
-    public LoggedIndex() {
-        initComponents();
+    public LoggedIndex(String user, ProxyChatClient proxyClient) {
+        initComponents(); 
         
         InitArrayList();
+        proxy = proxyClient;
+        LocalUser = user;
     }
     
     /**
@@ -343,4 +349,22 @@ public class LoggedIndex extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextAreaInputChat;
     // End of variables declaration//GEN-END:variables
+    
+    @Override
+    public int LoadingChat(ArrayList<Message> messages) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'LoadingChat'");
+    }
+
+    @Override
+    public int GetSendMessage(Message m) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'GetSendMessage'");
+    }
+
+    @Override
+    public int getSentMsgAck() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSentMsgAck'");
+    }
 }

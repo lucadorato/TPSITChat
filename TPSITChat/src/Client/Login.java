@@ -4,12 +4,15 @@
  */
 package Client;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author lucad
  */
 public class Login extends javax.swing.JFrame {
 
+    ProxyChatClient proxy;
     /**
      * Creates new form Login
      */
@@ -26,9 +29,9 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jLabelNick = new javax.swing.JLabel();
+        jLabelPass = new javax.swing.JLabel();
+        jTextFieldNick = new javax.swing.JTextField();
         jPasswordField1 = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -38,9 +41,9 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("LogInFrame"); // NOI18N
 
-        jLabel1.setText("NickName");
+        jLabelNick.setText("NickName");
 
-        jLabel2.setText("Password");
+        jLabelPass.setText("Password");
 
         jButton1.setLabel("LogIn");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -79,11 +82,11 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabelNick, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelPass))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                            .addComponent(jTextFieldNick, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                             .addComponent(jPasswordField1)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
@@ -105,11 +108,11 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelNick)
+                    .addComponent(jTextFieldNick, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(jLabelPass)
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addComponent(jButton1)
@@ -120,7 +123,7 @@ public class Login extends javax.swing.JFrame {
                 .addGap(45, 45, 45))
         );
 
-        jLabel2.getAccessibleContext().setAccessibleDescription("");
+        jLabelPass.getAccessibleContext().setAccessibleDescription("");
         jButton1.getAccessibleContext().setAccessibleName("Accedi");
 
         pack();
@@ -142,8 +145,20 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
-        new LoggedIndex().setVisible(true);
-        Login.this.setVisible(false);        
+        proxy = new ProxyChatClient();
+        int LoginResult = proxy.LogIn(jTextFieldNick.getText(), jPasswordField1.getText());
+        if(LoginResult==2)
+        {
+            LoggedIndex li = new LoggedIndex(jTextFieldNick.getText(),proxy);
+            proxy.CreateClientThread(li);
+            li.setVisible(true);
+            Login.this.setVisible(false);        
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "User o Password Errarti");
+        }
+        
     }//GEN-LAST:event_jButton1MouseClicked
 
     /**
@@ -184,11 +199,11 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelNick;
+    private javax.swing.JLabel jLabelPass;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextFieldNick;
     // End of variables declaration//GEN-END:variables
 }
