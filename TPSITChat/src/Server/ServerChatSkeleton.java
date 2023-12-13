@@ -1,6 +1,7 @@
 package Server;
 
 
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -16,12 +17,12 @@ public class ServerChatSkeleton implements ChatFeatures{
     private ServerChat sc;
     private ServerSocket SocketSer;
     private Semaphore MapSem;
-    private HashMap<String,Socket> addrMap; 
+    private HashMap<String,ObjectOutputStream> addrMap; 
 
     public ServerChatSkeleton(ServerChat schat)
     {
         sc = schat;
-        addrMap = new HashMap<String,Socket>();
+        addrMap = new HashMap<String,ObjectOutputStream>();
         MapSem = new Semaphore(1);
     }
     
@@ -60,6 +61,10 @@ public class ServerChatSkeleton implements ChatFeatures{
        return sc.SendMessage(Message);    
     }
     
+    public NodeList LoadContacts(String User)
+    {
+        return sc.LoadContacts(User);
+    }
 
     
 }

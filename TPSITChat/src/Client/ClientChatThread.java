@@ -17,11 +17,13 @@ public class ClientChatThread extends Thread{
     private Socket s;
     private ClientBLInterface ci;
     private Boolean terminate;
-    ClientChatThread(Socket s, ClientBLInterface ci)
+    private ObjectInputStream ois;
+    ClientChatThread(ObjectInputStream ois, ClientBLInterface ci)
     {
-        this.s=s;
+        this.ois=ois;
         this.ci=ci;
         this.terminate=false;
+        
     }
 
     public void TerminateThread()
@@ -31,8 +33,8 @@ public class ClientChatThread extends Thread{
     public void run()
     {
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
+            // ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+            // ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
 
             while(!terminate)
             {
@@ -61,6 +63,15 @@ public class ClientChatThread extends Thread{
                     case "AckSentMsg":
                         ci.getSentMsgAck();
                         break;
+                    case "ContactsLoading":
+                        ArrayList<String> ALContacts = new ArrayList<String>();
+                        NodeList ListContacts = packet.getElementsByTagName("user");
+                        for(int i = 0; i<ListContacts.getLength();i++)
+                        {
+                            String contact = ListContacts.item(i).getAttributes().getNamedItem("nickName").getTextContent();
+                            ALContacts.add(contact);
+                        }
+                        ci.getLoadingContacts(ALContacts);
                     default:
                         break;
                 }   

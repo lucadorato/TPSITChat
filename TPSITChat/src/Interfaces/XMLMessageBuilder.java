@@ -123,4 +123,52 @@ public class XMLMessageBuilder {
         return doc;
     }
 
+    public Document createLoadContactReqXMLObject(String user)
+    {
+        //Create an xml object (Document)
+        Document doc = docBuilder.newDocument();
+        //Create the root element
+        Element rootElement = doc.createElement("XMLPacket");
+        //Add the element to the xml document
+        doc.appendChild(rootElement);
+
+        //Add operation, user and password element as children elements
+        Element e = doc.createElement("Operation");
+        e.setTextContent("ContactsReq");
+        rootElement.appendChild(e);
+        e = doc.createElement("user");
+        e.setTextContent(user);
+        rootElement.appendChild(e);
+
+        //return the document object
+        return doc;
+    }
+
+    public Document createContactsXMLObject(NodeList contacts)
+    {
+        //Create an xml object (Document)
+        Document doc = docBuilder.newDocument();
+        //Create the root element
+        Element rootElement = doc.createElement("XMLPacket");
+        //Add the element to the xml document
+        doc.appendChild(rootElement);
+
+        //Add operation, user and password element as children elements
+        Element e = doc.createElement("Operation");
+        e.setTextContent("ContactsLoading");
+        rootElement.appendChild(e);
+        
+        Element eUserList = doc.createElement("user_list");
+        
+        for(int i = 0; i<contacts.getLength();i++)
+        {
+            Node contact = doc.importNode(contacts.item(i), true);
+            eUserList.appendChild(contact);
+        }
+        rootElement.appendChild(eUserList);
+
+        //return the document object
+        return doc;
+    }
+
 }

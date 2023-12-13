@@ -42,10 +42,10 @@ public class LoggedIndex extends javax.swing.JFrame implements ClientBLInterface
      */
     public LoggedIndex(String user, ProxyChatClient proxyClient) {
         initComponents(); 
-        
-        InitArrayList();
         proxy = proxyClient;
         LocalUser = user;
+        InitArrayList();
+       
     }
     
     /**
@@ -55,13 +55,12 @@ public class LoggedIndex extends javax.swing.JFrame implements ClientBLInterface
      */
     private void InitArrayList()
     {
-        LocalUser = "LocalUser";
         Contacts = new ArrayList<String>();
         LContacts = new ArrayList<JLabel>();
-        for(int i = 0; i<10;i++)
-        {
-            Contacts.add("Contact"+i);
-        }
+        // for(int i = 0; i<10;i++)
+        // {
+        //     Contacts.add("Contact"+i);
+        // }
         
         Messages = new ArrayList<ArrayList<Message>>();
         for(int i = 0; i<10;i++)
@@ -209,17 +208,13 @@ public class LoggedIndex extends javax.swing.JFrame implements ClientBLInterface
      */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         
-        
         JPanelContacts.setLayout(null); //set Layout null to the JPanel contact in order to manage contact position using x,y coordinates
         JPanelContacts.setBackground(Color.LIGHT_GRAY);
         //jScrollContacts.setViewportView(JPanelContacts);
         jScrollContacts.setVerticalScrollBarPolicy(
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); //set only the vertical scroll
-        //Add a contact for each contact saved in the arrayList Contacts
-        for(int i = 0; i<Contacts.size(); i++)
-        {
-            AddContact(Contacts.get(i),LContacts.size());
-        }
+        
+        proxy.LoadContacts(LocalUser);
         
     }//GEN-LAST:event_formWindowOpened
 
@@ -337,6 +332,8 @@ public class LoggedIndex extends javax.swing.JFrame implements ClientBLInterface
         JPanelContacts.add(JPSingleContact);
         //resize the jpanel scroll bar considering the new added contact
         JPanelContacts.setPreferredSize(new Dimension(70, ContatIdx*ContactHeight+ContactHeight));
+        JPSingleContact.revalidate();
+        JPSingleContact.repaint();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -366,5 +363,17 @@ public class LoggedIndex extends javax.swing.JFrame implements ClientBLInterface
     public int getSentMsgAck() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getSentMsgAck'");
+    }
+
+    public int getLoadingContacts(ArrayList<String> contacts)
+    {
+        Contacts.clear();
+        Contacts = contacts;
+        //Add a contact for each contact saved in the arrayList Contacts
+        for(int i = 0; i<Contacts.size(); i++)
+        {
+            AddContact(Contacts.get(i),LContacts.size());
+        }
+        return 1;
     }
 }

@@ -75,7 +75,7 @@ public class DBManager {
 			//search the chat element with id sender_receiver
 			Element chat = db.getElementById(sender+"_"+receiver);
 			//import chat message node from xml message object to xml db object and get it in newMessage
-			Node newMessage = db.importNode(message /*m.getElementsByTagName("ChatMessage").item(0)*/, true);
+			Node newMessage = db.importNode(message , true);
 			
 			if(chat != null)
 			{
@@ -123,7 +123,8 @@ public class DBManager {
 
     public synchronized NodeList GetContacts(String user)
     {
-        
+        NodeList contacts = db.getElementsByTagName("user");
+        return contacts;
     }
 
     private synchronized Element GetChat(String user1, String user2)

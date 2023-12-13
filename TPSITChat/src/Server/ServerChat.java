@@ -49,5 +49,10 @@ public class ServerChat implements ChatFeatures{
         dbm.AddMessage(Message);
         return Message.getElementsByTagName("Receiver").item(0).getTextContent();
     }
+
+    public NodeList LoadContacts(String User)
+    {
+        return dbm.GetContacts(User);
+    }
     
 }

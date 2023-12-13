@@ -20,10 +20,15 @@ public class ProxyChatClient implements ChatFeatures{
     private ClientBLInterface ci;
     private XMLMessageBuilder mb;
     private ClientChatThread clientThread;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
     ProxyChatClient()
     {
         try {
             sock = new Socket("localhost",8000);
+            oos = new ObjectOutputStream(sock.getOutputStream());
+            ois = new ObjectInputStream(sock.getInputStream());
+
             ci = null;
             mb = new XMLMessageBuilder();
             clientThread = null;
@@ -42,8 +47,6 @@ public class ProxyChatClient implements ChatFeatures{
         // TODO Auto-generated method stub
         int LoginResult = 0;
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(sock.getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(sock.getInputStream());
             Document packet = mb.createLogInXMLObject(User, Password);
             oos.writeObject(packet);
             LoginResult = (int)ois.readObject();
@@ -61,13 +64,14 @@ public class ProxyChatClient implements ChatFeatures{
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
         return LoginResult;
     }
 
     public void CreateClientThread(ClientBLInterface clInt)
     {
         ci=clInt;
-        clientThread = new ClientChatThread(sock, ci);
+        clientThread = new ClientChatThread(ois, ci);
         clientThread.start();
     } 
 
@@ -86,6 +90,19 @@ public class ProxyChatClient implements ChatFeatures{
     public String SendMessage(Element Message) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'SendMessage'");
+    }
+    @Override
+    public NodeList LoadContacts(String User) {
+        // TODO Auto-generated method stub
+        try {
+            Document packet = mb.createLoadContactReqXMLObject(User);
+            oos.writeObject(packet);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return null;
     }
     
 }

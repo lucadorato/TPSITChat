@@ -21,12 +21,12 @@ public class ServerChatThread extends Thread{
     
     private Socket ConnSocket;
     private ServerChatSkeleton scs;
-    private HashMap<String,Socket> addrMp;
+    private HashMap<String,ObjectOutputStream> addrMp;
     private final int SentMessage = 1;
     private Semaphore semMap;
     private XMLMessageBuilder mb;
 
-    public ServerChatThread(Socket s, ServerChatSkeleton skserver, HashMap<String,Socket> mp, Semaphore mapsem)
+    public ServerChatThread(Socket s, ServerChatSkeleton skserver, HashMap<String,ObjectOutputStream> mp, Semaphore mapsem)
     {
         ConnSocket = s;
         scs = skserver;
@@ -38,12 +38,14 @@ public class ServerChatThread extends Thread{
     public void run()
     {
         Boolean esci = false;
-        while(!esci)
+        try
         {
-            try
+            ObjectInputStream buffIn = new ObjectInputStream(ConnSocket.getInputStream());
+            ObjectOutputStream buffOut = new ObjectOutputStream(ConnSocket.getOutputStream());
+
+            while(!esci)
             {
-                ObjectInputStream buffIn = new ObjectInputStream(ConnSocket.getInputStream());
-                ObjectOutputStream buffOut = new ObjectOutputStream(ConnSocket.getOutputStream());
+            
                 Document packet = (Document)buffIn.readObject();
                 String requiredOp = packet.getElementsByTagName("Operation").item(0).getTextContent();
                 switch(requiredOp)
@@ -57,7 +59,7 @@ public class ServerChatThread extends Thread{
                         if(LoginResult == 2)
                         {
                             semMap.acquire();
-                            addrMp.put(user, ConnSocket);
+                            addrMp.put(user, buffOut);
                             semMap.release();
                         }
                         else
@@ -79,20 +81,27 @@ public class ServerChatThread extends Thread{
                         Element msg = (Element)packet.getElementsByTagName("ChatMessage").item(0);
                         String receiver=scs.SendMessage(msg);
                         semMap.acquire();
-                        Socket receiverSocket = addrMp.get(receiver);
+                        ObjectOutputStream oos = addrMp.get(receiver);
                         semMap.release();
-                        ObjectOutputStream oos = new ObjectOutputStream(receiverSocket.getOutputStream());
                         Document msgPacket = mb.createMsgXMLObject(msg);
                         oos.writeObject(msgPacket);
                         Document ackPacket = mb.createAckXMLObject();
                         buffOut.writeObject(ackPacket);
                         break;
+                    case "ContactsReq":
+                        String Cuser = packet.getElementsByTagName("user").item(0).getTextContent();
+                        NodeList users=scs.LoadContacts(Cuser);
+                        Document ContactsPacket = mb.createContactsXMLObject(users);
+                        buffOut.writeObject(ContactsPacket);
+                        break;
                 }
 
-            }catch(Exception e)
-            {
-                e.printStackTrace();
+           
             }
+
+        }catch(Exception e)
+        {
+            e.printStackTrace();
         }
         
         
